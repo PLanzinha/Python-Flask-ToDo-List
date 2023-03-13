@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+    {% for task in tasks %}
+    <li>
+        <input type="checkbox" name="Done" {% if task['is_done'] %} checked {% endif %} disabled onchange="this.form.submit()">
+        <span {% if task['is_done'] %} style="text-decoration: line-through" {% endif %}>{{ task['task_name'] }}</span>
+
+        <a href="{{ url_for('todo_list.toggle_task_status', index=loop.index0) }}">Check</a>
+        <a href="{{ url_for('todo_list.edit_task', index=loop.index0) }}" class="edit">Edit</a>
+        <a href="{{ url_for('todo_list.delete_task', index=loop.index0) }}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+<form action="{{ url_for('todo_list.add_task') }}" method="post">
+    <input type="text" name="task_name">
+    <button type="submit">Add Task</button>
+</form>
+
+<form action="{{ url_for('todo_list.clear_checked_tasks') }}" method="post">
+    <button type="submit" class="clear-button">Clear Checked Tasks</button>
+</form>
+{% endblock %}
